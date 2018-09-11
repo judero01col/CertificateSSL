@@ -25,12 +25,12 @@ namespace CertificateSSLGui
         private void button1_Click(object sender, EventArgs e)
         {
             string Key = oCertificateSSL.Export();
-            File.WriteAllText("PrivateKey.Key", Key);
+            File.WriteAllText("Private.Key", Key);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            StreamReader Reader = File.OpenText("PrivateKey.Key");
+            StreamReader Reader = File.OpenText("Private.Key");
             string Key  = Reader.ReadToEnd();
             oCertificateSSL.Import(Key);
         }

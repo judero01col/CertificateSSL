@@ -47,11 +47,11 @@ namespace CertificateSSLClass
                 privateKey.ExportPolicy = X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_PLAINTEXT_EXPORT_FLAG;
                 privateKey.CspInformations = objCSPs;
 
-                privateKey.ExportPolicy =
-                X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_ARCHIVING_FLAG |
-                X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_EXPORT_FLAG |
-                X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_PLAINTEXT_ARCHIVING_FLAG |
-                X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_PLAINTEXT_EXPORT_FLAG;
+                //privateKey.ExportPolicy =
+                //X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_ARCHIVING_FLAG |
+                //X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_EXPORT_FLAG |
+                //X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_PLAINTEXT_ARCHIVING_FLAG |
+                //X509PrivateKeyExportFlags.XCN_NCRYPT_ALLOW_PLAINTEXT_EXPORT_FLAG;
 
                 privateKey.Create();
 
@@ -184,7 +184,7 @@ namespace CertificateSSLClass
                 cert.Issuer = dnIssuer;
                 cert.NotBefore = DateTime.Today.AddDays(-1);
                 cert.NotAfter = DateTime.Today.AddYears(ExpirationLengthInYear);
-
+                                
                 cert.X509Extensions.Add((CX509Extension)eku); // add the EKU
                 cert.X509Extensions.Add((CX509Extension)objExtensionAlternativeNames);
                 cert.X509Extensions.Add((CX509Extension)objExtensionKeyUsage);
@@ -208,7 +208,8 @@ namespace CertificateSSLClass
 
                 // instantiate the target class with the PKCS#12 data (and the empty password)
                 // mark the private key as exportable (this is usually what you want to do)
-                return new X509Certificate2(Convert.FromBase64String(base64encoded), "", X509KeyStorageFlags.Exportable);
+
+                return new X509Certificate2(Convert.FromBase64String(base64encoded), "", X509KeyStorageFlags.Exportable); 
             }
             catch (Exception ex)
             {
@@ -221,11 +222,9 @@ namespace CertificateSSLClass
             try
             {
                 if (null != cert)
-                {
-                    byte[] pfx = cert.Export(X509ContentType.Pfx);
-                    cert = new X509Certificate2(pfx, (string)null, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
-
-                    bool Resp = false;
+                {                    
+                    //byte[] pfx = cert.Export(cert.Issuer == cert.Subject ? X509ContentType.Pfx : X509ContentType.Cert);
+                    //cert = new X509Certificate2(pfx, (string)null, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
 
                     using (X509Store Store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
                     {
@@ -259,19 +258,15 @@ namespace CertificateSSLClass
                         Store.Close();
                     }
 
-                    //ClsMensajes.MensajeInformacionGeneral(string.Concat("Self-Signed certificate created successfully"));
-
                     return true;
                 }
                 else
                 {
-                    //ClsMensajes.ExceptionMessage("An error occurred while trying to generate the Self-Generated certificate", new Exception("Error generating certificate"));
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                //ClsMensajes.ExceptionMessage("An error occurred while trying to generate the Self-Generated certificate", new Exception("Error generating certificate"));
                 return false;
             }
         }
