@@ -15,7 +15,7 @@ namespace CertificateSSLGui
 {
     public partial class Form1 : Form
     {
-        CertificateSSL oCertificateSSL = new CertificateSSL("SHA512", "Witech", "Witech Usa Inc CA", 1000);
+        CertificateSSL oCertificateSSL = new CertificateSSL("SHA512", "Prueba", "Prueba CA", 1000);
 
         public Form1()
         {
@@ -42,7 +42,7 @@ namespace CertificateSSLGui
 
         private void button4_Click(object sender, EventArgs e)
         {
-            oCertificateSSL.GenSelfSignedCert("Novo", "JURGEN-HP");
+            oCertificateSSL.GenSelfSignedCert("Prueba", "JURGEN-HP");
         }
     }
 }
